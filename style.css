@@ -1,4 +1,142 @@
-/* ---------- Mithila idle & feeding/offering animations ---------- */
+:root{--paper:#FDFBF7;--cr:#800020;--mu:#E1AD01;--in:#2B2A6B;--ink:#1a1210;--bg:#FFF4DC;--bg2:#FFD9B0;--fg:#1a1210}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth;scroll-snap-type:y proximity}
+@media(min-width:900px) and (min-height:640px){html{scroll-snap-type:y mandatory}}
+body{font-family:Mukta,"Segoe UI",sans-serif;font-size:1.08rem;line-height:1.6;color:var(--fg);background:linear-gradient(180deg,var(--bg2),var(--bg) 65%) fixed var(--bg);overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.22;mix-blend-mode:multiply;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.8' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .4 0 0 0 0 .3 0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E")}
+h1,h2,h3{font-family:"Yatra One",Georgia,serif;font-weight:400;line-height:1.15}
+#bar{position:fixed;top:0;left:0;height:5px;width:100%;background:var(--mu);transform:scaleX(0);transform-origin:0 50%;z-index:40}
+
+/* ---------- audio controls ---------- */
+#audioBox{position:fixed;top:14px;right:14px;z-index:35;display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+#audioBox .row{display:flex;gap:8px}
+#sound,#audioBtn{font:600 .95rem Mukta,sans-serif;background:var(--paper);color:var(--ink);border:3px solid var(--ink);border-radius:999px;padding:.4rem .9rem;cursor:pointer;box-shadow:3px 3px 0 var(--cr);transition:transform .15s}
+#sound:hover,#audioBtn:hover{transform:translate(-1px,-1px)}
+#sound[aria-pressed=true]{background:var(--mu)}
+#sound small{display:block;font-weight:400;font-size:.75rem;line-height:1.1}
+#audioPanel{width:min(330px,calc(100vw - 28px));background:var(--paper);color:var(--ink);border-radius:16px;padding:1rem 1.1rem;box-shadow:0 8px 28px rgba(0,0,0,.28);font-size:.92rem;line-height:1.45}
+#audioPanel[hidden]{display:none}
+#audioPanel p{margin-bottom:.7rem}
+#audioPanel .note{font-size:.8rem;opacity:.8;margin:.6rem 0 0}
+.slot{display:block;margin-bottom:.7rem}
+.slot b{display:block;color:var(--cr)}
+.slot em{display:block;font-style:normal;font-size:.78rem;opacity:.75}
+.slot input{width:100%;font:.8rem Mukta,sans-serif;margin-top:.2rem}
+.slot output{display:block;font-size:.78rem;color:var(--in)}
+
+/* ---------- page dots ---------- */
+#dots{position:fixed;right:12px;top:50%;transform:translateY(-50%);z-index:25;display:flex;flex-direction:column;gap:10px}
+#dots button{width:12px;height:12px;border-radius:50%;border:2px solid var(--fg);background:transparent;padding:0;cursor:pointer;opacity:.55;transition:transform .2s,opacity .2s,background .2s}
+#dots button:hover{opacity:1}
+#dots button[aria-current=true]{background:var(--cr);border-color:var(--cr);opacity:1;transform:scale(1.35)}
+@media(max-width:720px){#dots{display:none}}
+
+/* ---------- hero ---------- */
+.hero{position:relative;overflow:hidden;min-height:100vh;display:grid;place-items:center;text-align:center;padding:5rem 1.2rem 3rem;scroll-snap-align:start}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 40%,rgba(255,190,60,.45),rgba(255,120,80,.15) 45%,transparent 70%)}
+.hero>div{position:relative}
+.hero h1{font-size:clamp(2.6rem,9vw,5.6rem);color:var(--cr)}
+.hero p{max-width:34ch;margin:.8rem auto 0}
+.hero svg{width:min(340px,75vw);margin-bottom:1rem;animation:spin 90s linear infinite}
+.hero .cue{margin-top:1.6rem;font-size:.9rem;opacity:.75;animation:nudge 1.6s ease-in-out infinite alternate}
+@keyframes nudge{to{transform:translateY(8px)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ---------- pages (one per event) ---------- */
+.page{position:relative;overflow:hidden;min-height:100vh;display:grid;align-items:center;padding:4.6rem 1.4rem 3rem;scroll-snap-align:start}
+.wrap{position:relative;z-index:1;width:100%;max-width:1040px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:2.6rem;align-items:center}
+.wrap.solo{grid-template-columns:1fr}
+.interact{display:flex;flex-direction:column;align-items:center;gap:.9rem;text-align:center;min-width:0}
+@media(min-width:801px){.flip .interact{order:2}}
+@media(max-width:800px){.wrap{grid-template-columns:1fr;gap:1.6rem}.page{padding:4.4rem 1rem 2.5rem}}
+
+.info{min-width:0}
+.day{font:600 .82rem Mukta,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--cr);margin-bottom:.3rem}
+.info h2{font-size:clamp(2rem,5vw,3rem);color:var(--cr);margin-bottom:.5rem}
+.lead{max-width:56ch;margin-bottom:1.1rem}
+.more{max-width:58ch}
+.more dt{font:600 .82rem Mukta,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--cr);margin-top:.8rem}
+.more dt::before{content:"\2740\00a0";color:var(--mu)}
+.more dd{margin:.1rem 0 0;font-size:1rem;line-height:1.55}
+.chh .info h2,.chh .day,.chh .more dt{color:var(--mu)}
+.chh.morning .info h2,.chh.morning .day,.chh.morning .more dt{color:var(--cr)}
+
+.stage{position:relative;width:100%;max-width:440px;margin:0}
+.stage::before{content:"";position:absolute;inset:4% 8%;border-radius:50%;z-index:-1;background:radial-gradient(circle,rgba(255,200,70,.5),rgba(230,80,90,.18) 62%,transparent 68%);border:3px dotted rgba(128,0,32,.3)}
+.stage svg{width:100%;height:auto;display:block;overflow:visible}
+.stage.wide{max-width:560px}
+
+.btn{font:600 1rem Mukta,sans-serif;background:linear-gradient(135deg,#a0102f,#800020);color:#fff;border:3px solid var(--ink);border-radius:6px;padding:.55rem 1.2rem;cursor:pointer;box-shadow:4px 4px 0 var(--ink);transition:transform .15s,box-shadow .15s,filter .2s}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink);filter:brightness(1.1)}
+.btn:active{transform:translate(3px,3px) scale(.96);box-shadow:1px 1px 0 var(--ink)}
+.btn.alt{background:linear-gradient(135deg,#ffcf3a,#ff9a3c);color:var(--ink)}
+button:focus-visible,input:focus-visible{outline:3px solid var(--mu);outline-offset:3px}
+.svgbtn{background:none;border:0;padding:0;cursor:pointer;width:100%;display:block}
+
+/* soft caption (no box outline) */
+.pop{position:absolute;left:50%;bottom:-6px;width:88%;transform:translate(-50%,20px) scale(.9);opacity:0;pointer-events:none;background:rgba(253,251,247,.96);color:var(--ink);border-radius:14px;box-shadow:0 6px 18px rgba(0,0,0,.2);padding:.6rem .9rem;font-size:.92rem;line-height:1.4;text-align:left;transition:.4s;z-index:3}
+.pop.show{opacity:1;transform:translate(-50%,0) scale(1)}
+.treat{position:absolute;z-index:4;width:48px;pointer-events:none}
+.petal{position:absolute;top:-24px;width:12px;height:16px;border-radius:50% 0 50% 50%;pointer-events:none;z-index:5;animation:fall linear forwards}
+@keyframes fall{to{transform:translate(40px,900px) rotate(540deg);opacity:0}}
+.hop{animation:hop .5s 3}
+@keyframes hop{50%{transform:translateY(-14px)}}
+.wag{transform-origin:190px 105px;animation:wag .25s 8 alternate}
+@keyframes wag{to{transform:rotate(25deg)}}
+.joy{opacity:0;transition:opacity .4s}.happy .joy{opacity:1}
+.rise{opacity:0;transform:translateY(40px) scale(.96);transition:opacity .9s,transform .9s}
+.rise.in{opacity:1;transform:none}
+
+/* laxmi puja glow */
+.page.lit::before{content:"";position:absolute;inset:0;z-index:0;background:radial-gradient(circle at 30% 50%,rgba(255,196,60,.75),rgba(255,160,40,.25) 45%,transparent 70%);animation:glow 3s ease-in-out infinite alternate}
+@keyframes glow{to{opacity:.7}}
+.flame{transform-origin:80px 78px;transform:scale(0);transition:transform .5s}
+.lit .flame{transform:scale(1);animation:flick .4s infinite alternate}
+@keyframes flick{to{transform:scale(1.12,.94) skewX(3deg)}}
+.tika{transform-origin:70px 66px;transform:scale(0);transition:transform .4s cubic-bezier(.3,1.8,.5,1)}
+.tika.on{transform:scale(1)}
+.mandala{animation:spin 60s linear infinite}
+
+/* deusi bhailo */
+.coin{position:absolute;z-index:4;width:24px;height:24px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fff3a8,var(--mu));border:2px solid var(--ink);pointer-events:none}
+.bhailo{position:absolute;left:50%;top:6%;transform:translateX(-50%) scale(.5);opacity:0;font:1.8rem "Yatra One",serif;color:var(--cr);background:var(--mu);border-radius:10px;padding:.2rem 1rem;white-space:nowrap;z-index:6;pointer-events:none}
+.bhailo.show{animation:pop 1.5s}
+@keyframes pop{15%{opacity:1;transform:translateX(-50%) scale(1.1)}80%{opacity:1;transform:translateX(-50%) scale(1)}100%{opacity:0;transform:translateX(-50%) translateY(-20px)}}
+.shake{animation:shake .4s}
+@keyframes shake{25%{transform:rotate(-3deg) scale(1.03)}75%{transform:rotate(3deg) scale(1.03)}}
+.ctl{display:flex;flex-wrap:wrap;gap:.8rem;align-items:center;justify-content:center}
+input[type=range]{accent-color:var(--cr);width:150px}
+
+/* chhath */
+.offer,.arms{transform-origin:110px 104px}
+.offer{transition:transform 1s}
+.pour .offer{transform:rotate(-34deg)}
+.pot{transform-origin:146px 112px;transition:transform 1s .5s}
+.pour .pot{transform:rotate(68deg)}
+.stream{stroke-dasharray:6 8;opacity:0;transition:opacity .4s}
+.pour .stream{opacity:1;transition-delay:1.2s;animation:flow .5s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-14}}
+.rip{opacity:0;transform-origin:center;transform-box:fill-box}
+.pour .rip{animation:rip 1.4s ease-out infinite}
+@keyframes rip{0%{opacity:.9;transform:scale(.2)}100%{opacity:0;transform:scale(1.4)}}
+.sunA,.sunB{transition:transform 1.6s,filter 1.6s}
+.pour .sunA{filter:drop-shadow(0 0 22px #ffb347)}
+.arms{transition:transform 1.3s cubic-bezier(.3,1.2,.4,1)}
+.soop{transition:transform 1.3s cubic-bezier(.3,1.2,.4,1)}
+.lifted .arms{transform:rotate(-45deg)}
+.lifted .soop{transform:translateY(-34px)}
+.lifted .sunB{transform:translateY(-18px);filter:drop-shadow(0 0 28px #fff0a0)}
+
+footer{position:relative;text-align:center;padding:3rem 1rem 4rem;max-width:48ch;margin:0 auto;scroll-snap-align:end}
+
+/* decoration */
+.bulbs{pointer-events:none}
+.page>.bulbs,.hero>.bulbs{position:absolute;left:0;right:0;top:0;height:42px;z-index:3}
+.bulbs::before{content:"";position:absolute;left:0;right:0;top:3px;border-top:2px dotted var(--fg);opacity:.5}
+.bulbs i{position:absolute;width:10px;height:15px;margin-left:-5px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:var(--c);box-shadow:0 0 10px 3px var(--c);animation:tw 1.8s ease-in-out infinite alternate}
+@keyframes tw{from{opacity:.5;transform:scale(.9)}to{opacity:1;transform:scale(1.12)}}
+#drift{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01s!important;animation-iteration-count:1!important;transition-duration:.01s!important}html{scroll-behavior:auto}}/* ---------- Mithila idle & feeding/offering animations ---------- */
 #crowStage .crow-head {
   transform-box: fill-box;
   transform-origin: 70% 80%;
