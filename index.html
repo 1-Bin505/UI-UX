@@ -1,1 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tihar &amp; Chhath – A Mithila Scroll</title>
+<meta name="description" content="An interactive Mithila-art scroll through the festivals of Tihar and Chhath.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Yatra+One&family=Mukta:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="bar"></div>
 
+<!-- audio controls -->
+<div id="audioBox">
+  <div class="row">
+    <button id="audioBtn" type="button" aria-expanded="false" aria-controls="audioPanel">Add audio</button>
+    <button id="sound" aria-pressed="false" type="button">Sound off<small id="mood">add or play audio</small></button>
+  </div>
+  <div id="audioPanel" hidden>
+    <p>Choose a music file for each theme. It plays automatically when you reach those pages. Files stay on your device.</p>
+    <label class="slot"><b>Tihar dhun</b><em>Kaag, Kukur, Gai, Laxmi, Mha Puja, Bhai Tika</em>
+      <input type="file" accept="audio/*" data-slot="tihar"><output data-name="tihar">No file chosen</output></label>
+    <label class="slot"><b>Deusi-Bhailo song</b><em>Deusi-Bhailo page</em>
+      <input type="file" accept="audio/*" data-slot="deusi"><output data-name="deusi">No file chosen</output></label>
+    <label class="slot"><b>Chhath tune</b><em>Both Chhath pages</em>
+      <input type="file" accept="audio/*" data-slot="chhath"><output data-name="chhath">No file chosen</output></label>
+    <p class="note">Tip: you can also put <code>tihar.mp3</code>, <code>deusi.mp3</code> and <code>chhath.mp3</code> in an <code>audio</code> folder beside index.html and they will load by themselves.</p>
+  </div>
+</div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+<pattern id="lines" width="6" height="6" patternUnits="userSpaceOnUse"><path d="M0 3H6" stroke="#fff" stroke-opacity=".4"/></pattern>
+<pattern id="scales" width="14" height="10" patternUnits="userSpaceOnUse"><path d="M0 10Q7 0 14 10" fill="none" stroke="#800020" stroke-width="1.4"/></pattern>
+<symbol id="eye" viewBox="0 0 40 20"><path d="M1 10Q20-7 39 10Q20 27 1 10Z" fill="#fff" stroke="#1a1210" stroke-width="2.4"/><circle cx="20" cy="10" r="5.5" fill="#1a1210"/><circle cx="22" cy="8" r="1.6" fill="#fff"/></symbol>
+<symbol id="flower" viewBox="0 0 60 60"><g stroke="#1a1210" stroke-width="1.6" style="fill:var(--f1,#E1AD01)"><ellipse cx="30" cy="12" rx="8" ry="12" transform="rotate(0 30 30)"/><ellipse cx="30" cy="12" rx="8" ry="12" transform="rotate(45 30 30)"/><ellipse cx="30" cy="12" rx="8" ry="12" transform="rotate(90 30 30)"/><ellipse cx="30" cy="12" rx="8" ry="12" transform="rotate(135 30 30)"/><ellipse cx="30" cy="12" rx="8" ry="12" transform="rotate(180 30 30)"/><ellipse cx="30" cy="12" rx="8" ry="12" transform="rotate(225 30 30)"/><ellipse cx="30" cy="12" rx="8" ry="12" transform="rotate(270 30 30)"/><ellipse cx="30" cy="12" rx="8" ry="12" transform="rotate(315 30 30)"/></g><circle cx="30" cy="30" r="11" stroke="#1a1210" stroke-width="1.6" style="fill:var(--f2,#e8590c)"/><circle cx="30" cy="30" r="4" fill="#800020"/></symbol>
+<symbol id="hand" viewBox="0 0 30 34"><circle cx="15" cy="23" r="9"/><ellipse cx="6" cy="14" rx="2.4" ry="6" transform="rotate(-25 6 14)"/><ellipse cx="11" cy="8" rx="2.4" ry="7"/><ellipse cx="17" cy="6" rx="2.4" ry="7"/><ellipse cx="23" cy="9" rx="2.4" ry="6.5" transform="rotate(15 23 9)"/></symbol>
+<!-- devotee standing in the river (upper body; the water is drawn over the waist) -->
+<g id="devotee" stroke="#1a1210" stroke-width="3">
+  <path d="M72 160Q74 104 100 96Q126 104 128 160Z" fill="#c8102e"/>
+  <path d="M82 110Q100 128 122 106" fill="none" stroke="#E1AD01" stroke-width="4"/>
+  <circle cx="100" cy="76" r="17" fill="#E1AD01"/>
+  <path d="M82 78Q80 50 100 50Q120 50 118 78Q108 64 100 64Q92 64 82 78Z" fill="#e8590c"/>
+  <use href="#eye" x="99" y="70" width="18" height="9"/>
+</g>
+</defs></svg>
+
+<!-- ===== start ===== -->
+<header class="hero" id="top" data-title="Start" data-mode="tihar">
+<div>
+<svg viewBox="-26 -26 252 252" role="img" aria-label="Mithila sun with almond eyes">
+<circle cx="100" cy="100" r="96" fill="none" stroke="#800020" stroke-width="3"/><circle cx="100" cy="100" r="88" fill="none" stroke="#1a1210" stroke-width="2" stroke-dasharray="2 6" stroke-linecap="round"/>
+<g id="rays"></g>
+<circle cx="100" cy="100" r="52" fill="#E1AD01" stroke="#1a1210" stroke-width="4"/><circle cx="100" cy="100" r="52" fill="url(#lines)"/>
+<use href="#eye" x="68" y="86" width="64" height="32"/>
+</svg>
+<h1>Tihar &amp; Chhath</h1>
+<p>Light, kinship and the sun, painted the Mithila way. Scroll to move from one festival day to the next.</p>
+<p class="cue" aria-hidden="true">scroll down &#8595;</p>
+</div>
+</header>
+
+<main>
+
+<!-- 1 · Kaag Tihar -->
+<section class="page" id="kaag" data-title="Kaag Tihar" data-mode="tihar" aria-labelledby="kaagH">
+<div class="wrap">
+  <div class="interact">
+    <figure class="stage rise" id="crowStage" style="--tx:14%;--ty:34%">
+    <svg viewBox="0 0 240 190" role="img" aria-label="Mithila crow on a branch">
+    <path d="M5 150Q120 132 236 156" stroke="#5a3a1e" stroke-width="9" fill="none" stroke-linecap="round"/>
+    <g class="body">
+    <path d="M165 105L228 128L168 126Z" fill="#2B2A6B" stroke="#1a1210" stroke-width="3"/>
+    <path d="M112 128V150M130 128V152" stroke="#1a1210" stroke-width="4"/>
+    <ellipse cx="120" cy="100" rx="52" ry="32" fill="#2B2A6B" stroke="#1a1210" stroke-width="4"/><ellipse cx="120" cy="100" rx="52" ry="32" fill="url(#lines)"/>
+    <path d="M100 98Q130 66 164 98Q130 118 100 98Z" fill="#800020" stroke="#1a1210" stroke-width="3"/>
+    <circle cx="82" cy="78" r="23" fill="#2B2A6B" stroke="#1a1210" stroke-width="4"/>
+    <path d="M62 74L32 84L62 90Z" fill="#E1AD01" stroke="#1a1210" stroke-width="3"/>
+    <use href="#eye" x="68" y="66" width="24" height="12"/>
+    <g class="joy" fill="#E1AD01" stroke="#1a1210" stroke-width="1.5"><circle cx="98" cy="40" r="6"/><circle cx="118" cy="30" r="5"/><circle cx="60" cy="42" r="5"/></g>
+    </g></svg>
+    <div class="pop">The crow carries news between worlds. Offering grain asks it to keep sorrow away from the home.</div>
+    </figure>
+    <button class="btn" data-feed="crow" type="button">Feed the crow</button>
+  </div>
+  <div class="info">
+    <p class="day">Tihar &middot; Day 1</p>
+    <h2 id="kaagH">Kaag Tihar</h2>
+    <p class="lead">The first day of Tihar honours the crow, a bird that is believed to carry messages between the living and the world of the dead.</p>
+    <dl class="more">
+      <dt>What is done</dt><dd>Families put out grains, sweets and other food on rooftops, balconies and doorsteps for the crows, and many offer prayers as they do so.</dd>
+      <dt>Why</dt><dd>The crow is seen as a messenger of Yama, the god of death. Its harsh call is taken as a sign of coming sorrow, so feeding it is a way of keeping grief away from the household.</dd>
+      <dt>Short history</dt><dd>Tihar, also called Yamapanchak (&ldquo;five days of Yama&rdquo;), opens with this day. Its animal worship grows out of old Hindu ideas about Yama and his attendants, and the festival is now Nepal&rsquo;s second biggest after Dashain.</dd>
+    </dl>
+  </div>
+</div>
+</section>
+
+<!-- 2 · Kukur Tihar -->
+<section class="page flip" id="kukur" data-title="Kukur Tihar" data-mode="tihar" aria-labelledby="kukurH">
+<div class="wrap">
+  <div class="interact">
+    <figure class="stage rise" id="dogStage" style="--tx:6%;--ty:50%">
+    <svg viewBox="0 0 240 190" role="img" aria-label="Mithila guard dog with marigold garland">
+    <path d="M30 170H220" stroke="#1a1210" stroke-width="3" stroke-dasharray="2 8" stroke-linecap="round"/>
+    <g class="body">
+    <path class="tail" d="M185 105Q215 80 220 60" stroke="#b86b1f" stroke-width="12" fill="none" stroke-linecap="round"/>
+    <path d="M105 150V170M125 150V170M165 150V170M185 150V170" stroke="#1a1210" stroke-width="10" stroke-linecap="round"/>
+    <ellipse cx="140" cy="120" rx="58" ry="34" fill="#b86b1f" stroke="#1a1210" stroke-width="4"/><ellipse cx="140" cy="120" rx="58" ry="34" fill="url(#lines)"/>
+    <path d="M62 72L50 40L84 66Z M100 70L112 40L84 62Z" fill="#1a1210"/>
+    <circle cx="78" cy="92" r="28" fill="#b86b1f" stroke="#1a1210" stroke-width="4"/>
+    <ellipse cx="56" cy="104" rx="17" ry="12" fill="#FDFBF7" stroke="#1a1210" stroke-width="3"/><circle cx="44" cy="102" r="5" fill="#1a1210"/>
+    <use href="#eye" x="68" y="76" width="26" height="13"/>
+    <g id="garland" stroke="#1a1210" stroke-width="2"></g>
+    <g class="joy" fill="#E1AD01" stroke="#1a1210" stroke-width="1.5"><circle cx="92" cy="36" r="6"/><circle cx="130" cy="58" r="5"/></g>
+    </g></svg>
+    <div class="pop">The dog guards the doorway of the living and of Yama. Its garland and tika thank it for loyalty.</div>
+    </figure>
+    <button class="btn" data-feed="dog" type="button">Feed the dog</button>
+  </div>
+  <div class="info">
+    <p class="day">Tihar &middot; Day 2</p>
+    <h2 id="kukurH">Kukur Tihar</h2>
+    <p class="lead">On the second day, every dog, whether a family pet or a stray on the street, is treated as an honoured guest.</p>
+    <dl class="more">
+      <dt>What is done</dt><dd>Dogs receive a red tika on the forehead, a garland of marigolds around the neck and a plate of tasty food. The Newar community calls this Khicha Puja.</dd>
+      <dt>Why</dt><dd>It is a thank-you for the dog&rsquo;s loyalty and watchfulness, and a way of acknowledging the bond between people and dogs.</dd>
+      <dt>Short history</dt><dd>Dogs hold a special place in Hindu mythology as guardians linked with Yama and the gates of the afterlife. In recent years, photos of garlanded dogs have spread across the internet and made this day famous well beyond Nepal.</dd>
+    </dl>
+  </div>
+</div>
+</section>
+
+<!-- 3 · Gai Puja -->
+<section class="page" id="gai" data-title="Gai Puja" data-mode="tihar" aria-labelledby="gaiH">
+<div class="wrap">
+  <div class="interact">
+    <figure class="stage rise">
+    <button class="svgbtn" id="cowbtn" type="button" aria-label="Apply a crimson tika to the cow">
+    <svg viewBox="0 0 300 215" role="img" aria-label="Mithila cow with painted hooves and handprints">
+    <g stroke="#1a1210" stroke-width="3.5">
+    <path d="M262 95Q290 110 280 150" fill="none" stroke-width="6"/>
+    <path d="M110 150H124V190H110ZM140 150H154V190H140ZM205 150H219V190H205ZM235 150H249V190H235Z" fill="#FDFBF7"/>
+    <path d="M110 190H124V202H110ZM140 190H154V202H140ZM205 190H219V202H205ZM235 190H249V202H235Z" fill="#800020"/>
+    <ellipse cx="170" cy="108" rx="97" ry="50" fill="#FDFBF7"/><ellipse cx="170" cy="108" rx="97" ry="50" fill="url(#scales)" stroke="none"/>
+    <ellipse cx="68" cy="96" rx="34" ry="42" fill="#FDFBF7"/>
+    <path d="M44 62Q30 36 52 38M92 62Q108 36 86 38" fill="none" stroke="#E1AD01" stroke-width="7"/>
+    <ellipse cx="60" cy="128" rx="23" ry="15" fill="#E1AD01"/><circle cx="52" cy="128" r="3" fill="#1a1210"/><circle cx="68" cy="128" r="3" fill="#1a1210"/>
+    </g>
+    <use href="#eye" x="40" y="86" width="26" height="13"/><use href="#eye" x="72" y="86" width="26" height="13" opacity=".0"/>
+    <circle class="tika" cx="70" cy="66" r="8" fill="#800020" stroke="#1a1210" stroke-width="2"/>
+    <g fill="#800020" opacity=".85"><use href="#hand" x="150" y="85" width="30" height="34"/><use href="#hand" x="195" y="95" width="30" height="34" transform="rotate(12 210 110)"/></g>
+    </svg></button>
+    <div class="pop" id="cowpop">The cow's forehead is marked with tika and garlands, a thank-you for milk and farmland.</div>
+    </figure>
+    <button class="btn" id="tikaBtn" type="button">Tap the cow to apply tika</button>
+  </div>
+  <div class="info">
+    <p class="day">Tihar &middot; Day 3 (morning)</p>
+    <h2 id="gaiH">Gai Puja</h2>
+    <p class="lead">Day three begins by thanking the cow, the animal that feeds the household and the fields.</p>
+    <dl class="more">
+      <dt>What is done</dt><dd>Cows are washed, given a tika and a garland, and fed good grass and treats. Homes are cleaned, and doorways are often smeared with a mixture of cow dung and red clay.</dd>
+      <dt>Why</dt><dd>The cow is regarded as an earthly form of Laxmi, the goddess of wealth, because its milk and dung nourish people and farmland. Honouring it prepares the home for Laxmi&rsquo;s visit that evening.</dd>
+      <dt>Short history</dt><dd>Reverence for the cow runs through Hindu tradition for thousands of years. In Tihar it forms the morning half of a double day: Gai Tihar by daylight, Laxmi Puja after dark.</dd>
+    </dl>
+  </div>
+</div>
+</section>
+
+<!-- 4 · Laxmi Puja -->
+<section class="page flip" id="laxmi" data-title="Laxmi Puja" data-mode="tihar" aria-labelledby="laxmiH">
+<div class="wrap">
+  <div class="interact">
+    <figure class="stage rise">
+    <svg viewBox="0 0 160 160" role="img" aria-label="Diya for Goddess Laxmi on a lotus">
+    <g stroke="#1a1210" stroke-width="3" fill="#FDFBF7"><path d="M80 150Q50 140 30 118Q60 118 80 140Q100 118 130 118Q110 140 80 150Z"/><path d="M80 150Q70 120 80 100Q90 120 80 150Z" fill="#800020"/></g>
+    <path d="M20 100Q80 170 140 100Q80 120 20 100Z" fill="#E1AD01" stroke="#1a1210" stroke-width="4"/><path d="M20 100Q80 170 140 100Q80 120 20 100Z" fill="url(#lines)"/>
+    <path d="M80 100V84" stroke="#1a1210" stroke-width="4"/>
+    <path class="flame" d="M80 80Q64 62 80 34Q96 62 80 80Z" fill="#ffb300" stroke="#800020" stroke-width="3"/>
+    </svg>
+    </figure>
+    <button class="btn alt" id="diyaBtn" type="button" aria-pressed="false">Light the Diya</button>
+  </div>
+  <div class="info">
+    <p class="day">Tihar &middot; Day 3 (evening)</p>
+    <h2 id="laxmiH">Laxmi Puja</h2>
+    <p class="lead">At dusk, every window glows. Lamps are lit so that the goddess of wealth finds a clean, bright home to enter.</p>
+    <dl class="more">
+      <dt>What is done</dt><dd>Houses are swept and decorated with oil lamps, candles and lights. Rangoli patterns in coloured powder lead from the door to the prayer room, and families worship Laxmi with flowers, incense and sweets.</dd>
+      <dt>Why</dt><dd>Laxmi is believed to visit homes that are tidy and lit, bringing wealth and good fortune for the year ahead. The light also stands for good over darkness.</dd>
+      <dt>Short history</dt><dd>Laxmi is said to have risen from the churning of the cosmic ocean as the goddess of prosperity. Tihar is the Nepali form of Deepawali, the festival of lights, and this night is its centrepiece.</dd>
+    </dl>
+  </div>
+</div>
+</section>
+
+<!-- 5 · Mha Puja -->
+<section class="page" id="mha" data-title="Mha Puja" data-mode="tihar" aria-labelledby="mhaH">
+<div class="wrap">
+  <div class="interact">
+    <figure class="stage rise"><svg class="mandala" viewBox="0 0 200 200" role="img" aria-label="Mha Puja mandala" id="mandala"></svg></figure>
+    <p>Mha Puja: the body is worshipped as a lamp.</p>
+  </div>
+  <div class="info">
+    <p class="day">Tihar &middot; Day 4</p>
+    <h2 id="mhaH">Mha Puja</h2>
+    <p class="lead">The fourth day has several faces. For the Newars of Kathmandu Valley it is a night to honour the self.</p>
+    <dl class="more">
+      <dt>What is done</dt><dd>In the evening, Newar families draw a mandala with oil, coloured powder and rice, place lamps, flowers and fruit on it, and worship the body and inner soul of each family member. Elsewhere, people worship oxen (Goru Puja) or make a hill of cow dung for Govardhan Puja.</dd>
+      <dt>Why</dt><dd>Mha Puja treats the person as a sacred being worth cleansing and blessing, so that the year can start with a healthy body and mind.</dd>
+      <dt>Short history</dt><dd>The day usually falls on the first day of Nepal Sambat, the Newar lunar calendar, which makes it a New Year celebration. Govardhan Puja recalls the story of Krishna lifting a hill to shelter people and cattle from a flood.</dd>
+    </dl>
+  </div>
+</div>
+</section>
+
+<!-- 6 · Bhai Tika -->
+<section class="page flip" id="bhai" data-title="Bhai Tika" data-mode="tihar" aria-labelledby="bhaiH">
+<div class="wrap">
+  <div class="interact">
+    <figure class="stage rise">
+    <svg viewBox="0 0 300 220" role="img" aria-label="Brother and sister inside a walnut boundary">
+    <ellipse cx="150" cy="116" rx="138" ry="98" fill="none" stroke="#5a3a1e" stroke-width="5" stroke-dasharray="1 11" stroke-linecap="round"/>
+    <g id="walnuts" fill="#5a3a1e" stroke="#1a1210" stroke-width="1.5"></g>
+    <g stroke="#1a1210" stroke-width="3.5">
+    <path d="M65 200Q70 120 100 112Q130 120 135 200Z" fill="#2B2A6B"/><circle cx="100" cy="82" r="26" fill="#E1AD01"/><path d="M74 78Q100 40 126 78Q100 60 74 78Z" fill="#1a1210"/>
+    <path d="M170 200Q175 126 205 118Q235 126 240 200Z" fill="#800020"/><circle cx="205" cy="90" r="24" fill="#E1AD01"/><path d="M181 90Q184 56 205 56Q226 56 229 90Q205 70 181 90Z" fill="#1a1210"/>
+    </g>
+    <use href="#eye" x="88" y="80" width="22" height="11"/><use href="#eye" x="194" y="88" width="22" height="11"/>
+    <g id="stripes"></g>
+    </svg>
+    </figure>
+    <button class="btn" id="tikaStep" type="button">Place colour 1: red</button>
+    <p id="tikaMsg" role="status" aria-live="polite">Seven colours, one for each blessing.</p>
+  </div>
+  <div class="info">
+    <p class="day">Tihar &middot; Day 5</p>
+    <h2 id="bhaiH">Bhai Tika</h2>
+    <p class="lead">The last day of Tihar is for siblings. Sisters bless their brothers and pray for their long, healthy lives.</p>
+    <dl class="more">
+      <dt>What is done</dt><dd>Brothers sit on the floor while sisters trace a line of oil around them from a copper pitcher, oil their hair, and apply a multi-coloured tika with a garland. Gifts, fruit, sweets and blessings are then exchanged.</dd>
+      <dt>Why</dt><dd>The rite is a sister&rsquo;s protective prayer for her brother and a celebration of the family bond. The oil circle is meant to shield him from harm, including the reach of death.</dd>
+      <dt>Short history</dt><dd>A popular legend says that the river goddess Yamuna invited her brother Yama, the god of death, and honoured him with tika and food, after which he granted that brothers blessed this way would live long. The day falls on the second day of the bright fortnight of Kartik.</dd>
+    </dl>
+  </div>
+</div>
+</section>
+
+<!-- 7 · Deusi-Bhailo -->
+<section class="page" id="bhailo" data-title="Deusi-Bhailo" data-mode="deusi" aria-labelledby="deusiH">
+<div class="wrap">
+  <div class="interact">
+    <figure class="stage rise" style="max-width:520px" id="bhStage">
+    <svg viewBox="0 0 360 220" role="img" aria-label="Folk musicians with a madal drum and a collection plate">
+    <g stroke="#1a1210" stroke-width="3.5">
+    <path d="M30 210Q35 130 70 124Q105 130 110 210Z" fill="#2B2A6B"/><circle cx="70" cy="96" r="24" fill="#E1AD01"/><path d="M46 90Q70 52 94 90Q70 74 46 90Z" fill="#800020"/>
+    <path d="M130 210Q135 130 170 124Q205 130 210 210Z" fill="#800020"/><circle cx="170" cy="96" r="24" fill="#E1AD01"/><path d="M146 90Q170 52 194 90Q170 74 146 90Z" fill="#2B2A6B"/>
+    <g id="madal"><path d="M118 150Q170 128 222 150L222 178Q170 198 118 178Z" fill="#E1AD01"/><path d="M118 150Q170 128 222 150L222 178Q170 198 118 178Z" fill="url(#scales)" stroke="none"/><path d="M148 140V190M170 136V194M192 140V190" stroke-width="2"/></g>
+    <path d="M225 210Q230 130 262 124Q295 130 300 210Z" fill="#E1AD01"/><circle cx="262" cy="96" r="24" fill="#E1AD01"/><path d="M238 90Q262 52 286 90Q262 74 238 90Z" fill="#1a1210"/>
+    <ellipse cx="320" cy="198" rx="34" ry="10" fill="#FDFBF7"/>
+    </g>
+    <use href="#eye" x="59" y="94" width="22" height="11"/><use href="#eye" x="159" y="94" width="22" height="11"/><use href="#eye" x="251" y="94" width="22" height="11"/>
+    </svg>
+    <div class="bhailo" id="bhText">Aahaa Bhailo!</div>
+    </figure>
+    <div class="ctl">
+      <label for="amt">Dakshina: Rs <output id="amtOut">20</output></label>
+      <input type="range" id="amt" min="10" max="100" step="10" value="20">
+      <button class="btn" id="giveBtn" type="button">Give Dakshina</button>
+    </div>
+    <p role="status" id="bhInfo">Collected: Rs 0. Give dakshina and the song starts again from the beginning.</p>
+  </div>
+  <div class="info">
+    <p class="day">Tihar &middot; Nights of Laxmi Puja and Bhai Tika</p>
+    <h2 id="deusiH">Deusi-Bhailo</h2>
+    <p class="lead">After dark, groups of carolers go from house to house with madal drums, songs and dance. Give dakshina, and the song begins again.</p>
+    <dl class="more">
+      <dt>What is done</dt><dd>Boys and men sing Deusi, and girls and women sing Bhailo. A lead singer calls out the verses, the group answers, and each visit ends with a blessing for the household. Hosts give money, fruit or rice bread in return.</dd>
+      <dt>Why</dt><dd>The songs carry good wishes for prosperity and health into every home. The gifts reward the singers, and the money is often used for community projects.</dd>
+      <dt>Short history</dt><dd>Folk tradition connects the custom to the legend of King Bali, who was humbled by Vishnu in the form of Vamana. It remains one of the liveliest, most community-minded parts of Tihar.</dd>
+    </dl>
+  </div>
+</div>
+</section>
+
+<!-- 8 + 9 · Chhath -->
+<div class="chh" id="chhath">
+
+<section class="page flip" id="eve" data-title="Chhath: Sandhya Arghya" data-mode="chhath" aria-labelledby="eveH">
+<div class="wrap">
+  <div class="interact">
+    <figure class="stage rise wide" id="evStage">
+    <svg viewBox="0 0 400 260" role="img" aria-label="A devotee standing in the river pours water toward the setting sun">
+    <g class="sunA"><circle cx="290" cy="130" r="44" fill="#E1AD01" stroke="#fdebcd" stroke-width="4"/><circle cx="290" cy="130" r="44" fill="url(#lines)"/><circle cx="290" cy="130" r="56" fill="none" stroke="#E1AD01" stroke-width="3" stroke-dasharray="3 7"/></g>
+    <use href="#devotee"/>
+    <path d="M0 150Q100 120 200 150Q300 120 400 150V260H0Z" fill="#2B2A6B" stroke="#fdebcd" stroke-width="3"/><path d="M0 150Q100 120 200 150Q300 120 400 150V260H0Z" fill="url(#lines)"/>
+    <g fill="none" stroke="#fdebcd" stroke-width="2"><ellipse class="rip" cx="230" cy="150" rx="40" ry="8"/><ellipse class="rip" style="animation-delay:.5s" cx="200" cy="170" rx="50" ry="10"/></g>
+    <g class="offer">
+      <path d="M112 107L160 121" fill="none" stroke="#1a1210" stroke-width="12" stroke-linecap="round"/><path d="M112 107L160 121" fill="none" stroke="#E1AD01" stroke-width="6" stroke-linecap="round"/>
+      <g class="pot">
+        <path d="M137 94H155L157 100Q165 108 163 122Q155 132 146 132Q137 132 129 122Q127 108 135 100Z" fill="#E1AD01" stroke="#fdebcd" stroke-width="3"/>
+        <path d="M137 94H155L157 100Q165 108 163 122Q155 132 146 132Q137 132 129 122Q127 108 135 100Z" fill="url(#lines)"/>
+        <path d="M133 108H159" stroke="#fdebcd" stroke-width="2" fill="none"/>
+      </g>
+      <path d="M108 107L132 119" fill="none" stroke="#1a1210" stroke-width="12" stroke-linecap="round"/><path d="M108 107L132 119" fill="none" stroke="#E1AD01" stroke-width="6" stroke-linecap="round"/>
+      <circle cx="132" cy="119" r="5.5" fill="#E1AD01" stroke="#1a1210" stroke-width="2.5"/><circle cx="160" cy="121" r="5.5" fill="#E1AD01" stroke="#1a1210" stroke-width="2.5"/>
+    </g>
+    <path class="stream" d="M163 83Q186 86 199 150" fill="none" stroke="#bfe3ff" stroke-width="5" stroke-linecap="round"/>
+    </svg>
+    </figure>
+    <div class="ctl"><button class="btn alt" id="arghyaBtn" type="button">Give Arghya</button></div>
+    <p role="status" id="arghyaMsg">The devotee waits in the river for the sun to set.</p>
+  </div>
+  <div class="info">
+    <p class="day">Chhath &middot; Day 3</p>
+    <h2 id="eveH">Sandhya Arghya</h2>
+    <p class="lead">At dusk, devotees stand in the water and offer arghya to the setting sun. Press the button and watch the devotee pour the water toward Surya.</p>
+    <dl class="more">
+      <dt>What is done</dt><dd>After a fast of roughly 36 hours without food or water, families walk to a river or pond carrying bamboo trays (soop) of fruit and thekua. Devotees stand in the water, offer water or milk to the setting sun, and sing Chhath songs through the evening.</dd>
+      <dt>Why</dt><dd>The festival thanks Surya, the sun, for sustaining all life, and honours Chhathi Maiya, who is asked to protect children and grant them long life and good health. Offering to the setting sun is unusual, as many solar rites begin at sunrise.</dd>
+      <dt>Short history</dt><dd>Sun worship is very old in the Indian subcontinent, and Chhathi Maiya appears in the Brahma Vaivarta Purana, which tells of the childless King Priyavrata. Chhath is especially strong in Mithila, including Janakpur in Nepal, and in Bihar and eastern Uttar Pradesh. It falls on Kartik Shukla Shashthi, six days after Diwali.</dd>
+    </dl>
+  </div>
+</div>
+</section>
+
+<section class="page" id="morn" data-title="Chhath: Usha Arghya" data-mode="chhath" aria-labelledby="mornH">
+<div class="wrap">
+  <div class="interact">
+    <figure class="stage rise wide" id="moStage">
+    <svg viewBox="0 0 400 260" role="img" aria-label="A devotee in the river lifts a basket of offerings toward the rising sun">
+    <g class="sunB"><circle cx="285" cy="122" r="52" fill="#E1AD01" stroke="#800020" stroke-width="4"/><circle cx="285" cy="122" r="52" fill="url(#lines)"/><circle cx="285" cy="122" r="66" fill="none" stroke="#800020" stroke-width="3" stroke-dasharray="3 7"/></g>
+    <use href="#devotee"/>
+    <path d="M0 150Q100 136 200 150Q300 136 400 150V260H0Z" fill="#2B2A6B" stroke="#800020" stroke-width="3"/><path d="M0 150Q100 136 200 150Q300 136 400 150V260H0Z" fill="url(#lines)"/>
+    <g class="arms">
+      <path d="M112 107L150 122" fill="none" stroke="#1a1210" stroke-width="12" stroke-linecap="round"/><path d="M112 107L150 122" fill="none" stroke="#E1AD01" stroke-width="6" stroke-linecap="round"/>
+    </g>
+    <g class="soop" stroke="#1a1210" stroke-width="3">
+      <path d="M124 114L117 72M176 114L183 72" stroke="#5a8a2e" stroke-width="6" fill="none"/>
+      <path d="M118 112H182Q184 122 174 128H126Q116 122 118 112Z" fill="#c98a2b"/><path d="M118 112H182Q184 122 174 128H126Q116 122 118 112Z" fill="url(#scales)" stroke="none"/>
+      <g fill="#8a4b14"><ellipse cx="132" cy="105" rx="12" ry="7"/><ellipse cx="150" cy="103" rx="12" ry="7"/><ellipse cx="168" cy="105" rx="12" ry="7"/><ellipse cx="141" cy="94" rx="11" ry="6.5"/><ellipse cx="159" cy="94" rx="11" ry="6.5"/></g>
+      <circle cx="150" cy="82" r="8" fill="#E1AD01"/>
+    </g>
+    <g class="arms">
+      <path d="M108 107L150 124" fill="none" stroke="#1a1210" stroke-width="12" stroke-linecap="round"/><path d="M108 107L150 124" fill="none" stroke="#E1AD01" stroke-width="6" stroke-linecap="round"/>
+      <circle cx="150" cy="123" r="6" fill="#E1AD01" stroke="#1a1210" stroke-width="2.5"/>
+    </g>
+    </svg>
+    </figure>
+    <div class="ctl"><button class="btn alt" id="soopBtn" type="button" aria-pressed="false">Lift the soop</button></div>
+  </div>
+  <div class="info">
+    <p class="day">Chhath &middot; Day 4</p>
+    <h2 id="mornH">Usha Arghya</h2>
+    <p class="lead">After a night of vigil, devotees return before dawn. The soop, heaped with thekua, fruit and sugarcane, is raised toward the rising sun.</p>
+    <dl class="more">
+      <dt>What is done</dt><dd>Before sunrise, families gather again at the water. Devotees stand facing east, offer arghya to the rising sun, and share the prasad. The fast is then broken (parana), usually with the offered food.</dd>
+      <dt>Why</dt><dd>This offering closes the vow. It thanks the sun for the renewal of the day and asks for health, prosperity and the wellbeing of children from Chhathi Maiya.</dd>
+      <dt>Short history</dt><dd>Chhath is described as one of the oldest sun festivals still observed. Different stories credit its origin to figures such as Sita in Mithila and Draupadi and Karna from the Mahabharata. Devotees keep the traditional rules strict: pure vegetarian food, no onion or garlic, and a clean kitchen.</dd>
+    </dl>
+  </div>
+</div>
+</section>
+
+</div>
+</main>
+
+<footer id="end" data-title="Shubha Tihar">
+<h2 style="color:var(--cr)">Shubha Tihar, Shubha Chhath</h2>
+<p>Painted in the Mithila tradition of Janakpur and Madhubani, where these festivals are held close.</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
