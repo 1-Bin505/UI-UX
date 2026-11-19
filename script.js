@@ -316,7 +316,6 @@
     return d;
   }
 
-  // garland of marigolds for the dog (appears after feeding)
   var garland = $('#garland');
   if (garland) {
     for (var gi = 0; gi < 10; gi++) {
@@ -336,6 +335,7 @@
     var stage = $(kind === 'crow' ? '#crowStage' : '#dogStage');
     if (!stage || btn.disabled) return;
     btn.disabled = true; btn.style.opacity = '.65';
+    stage.classList.add('feeding');
     var cs = getComputedStyle(stage);
     var tx = parseFloat(cs.getPropertyValue('--tx')) / 100; if (isNaN(tx)) tx = .5;
     var ty = parseFloat(cs.getPropertyValue('--ty')) / 100; if (isNaN(ty)) ty = .4;
@@ -356,6 +356,7 @@
       jobs.push(anim.finished.then(function () { t.remove(); }, function () { t.remove(); }));
     }
     Promise.all(jobs).then(function () {
+      stage.classList.remove('feeding');
       stage.classList.add('happy');
       restartClass(stage.querySelector('.body'), 'hop');
       if (kind === 'dog') {
@@ -374,11 +375,12 @@
 
   /* ---------- 3 · Gai Puja ---------- */
   (function () {
-    var cow = $('#cowbtn'), btn = $('#tikaBtn'), tika = $('.tika', cow), pop = $('#cowpop');
+    var cow = $('#cowbtn'), cowStage = $('#cowStage'), btn = $('#tikaBtn'), tika = $('.tika', cow), pop = $('#cowpop');
     if (!cow || !tika) return;
     function toggle() {
       var on = !tika.classList.contains('on');
       tika.classList.toggle('on', on);
+      if (cowStage) cowStage.classList.toggle('tika-on', on);
       cow.setAttribute('aria-label', on ? 'Remove the tika from the cow' : 'Apply a crimson tika to the cow');
       btn.textContent = on ? 'Tika applied. Tap to remove' : 'Tap the cow to apply tika';
       if (on) { showPop(pop, 5500); burst(cow, 14); } else { pop.classList.remove('show'); }

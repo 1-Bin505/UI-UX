@@ -136,4 +136,97 @@ footer{position:relative;text-align:center;padding:3rem 1rem 4rem;max-width:48ch
 .bulbs i{position:absolute;width:10px;height:15px;margin-left:-5px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:var(--c);box-shadow:0 0 10px 3px var(--c);animation:tw 1.8s ease-in-out infinite alternate}
 @keyframes tw{from{opacity:.5;transform:scale(.9)}to{opacity:1;transform:scale(1.12)}}
 #drift{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}
-@media(prefers-reduced-motion:reduce){*{animation-duration:.01s!important;animation-iteration-count:1!important;transition-duration:.01s!important}html{scroll-behavior:auto}}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01s!important;animation-iteration-count:1!important;transition-duration:.01s!important}html{scroll-behavior:auto}}/* ---------- Mithila idle & feeding/offering animations ---------- */
+#crowStage .crow-head {
+  transform-box: fill-box;
+  transform-origin: 70% 80%;
+  animation: crowIdleTilt 3s steps(2) infinite;
+}
+#crowStage .crow-tail {
+  transform-box: fill-box;
+  transform-origin: left center;
+  animation: crowTailBob 2.2s ease-in-out infinite alternate;
+}
+#crowStage.feeding .crow-head,
+#crowStage.happy .crow-head {
+  animation: crowPeckAnim .42s ease-in-out infinite alternate;
+}
+@keyframes crowIdleTilt {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(-7deg); }
+}
+@keyframes crowTailBob {
+  from { transform: rotate(-3deg); }
+  to { transform: rotate(4deg); }
+}
+@keyframes crowPeckAnim {
+  from { transform: rotate(0deg) translateY(0); }
+  to { transform: rotate(-22deg) translate(4px, 6px); }
+}
+
+#dogStage .tail {
+  transform-box: fill-box;
+  transform-origin: bottom left;
+  animation: dogIdleWag 1.3s ease-in-out infinite alternate;
+}
+#dogStage .dog-head {
+  transform-box: fill-box;
+  transform-origin: 65% 85%;
+  transition: transform .35s ease;
+}
+#dogStage.feeding .tail,
+#dogStage.happy .tail {
+  animation: wag .22s infinite alternate;
+}
+#dogStage.feeding .dog-head,
+#dogStage.happy .dog-head {
+  transform: rotate(-14deg) translateY(5px);
+}
+@keyframes dogIdleWag {
+  from { transform: rotate(-8deg); }
+  to { transform: rotate(9deg); }
+}
+
+#cowStage .cow-tail {
+  transform-box: fill-box;
+  transform-origin: top left;
+  animation: cowTailIdle 2.8s ease-in-out infinite alternate;
+}
+#cowStage .cow-head {
+  transform-box: fill-box;
+  transform-origin: 75% 75%;
+  transition: transform .45s ease;
+}
+#cowStage.tika-on .cow-head {
+  transform: rotate(-8deg) translateY(3px);
+}
+@keyframes cowTailIdle {
+  from { transform: rotate(-6deg); }
+  to { transform: rotate(8deg); }
+}
+
+/* River water flow & half-submerged devotee bob */
+.water-flow {
+  animation: riverGentleShift 4.5s ease-in-out infinite alternate;
+}
+.wave-line {
+  animation: waveDashFlow 3.2s linear infinite;
+}
+.wave-line.w2 {
+  animation-duration: 4.8s;
+  animation-direction: reverse;
+}
+.bather {
+  animation: devoteeWaterBob 3.2s ease-in-out infinite;
+}
+@keyframes riverGentleShift {
+  from { transform: translateY(0); }
+  to { transform: translateY(2.5px); }
+}
+@keyframes waveDashFlow {
+  to { stroke-dashoffset: -44; }
+}
+@keyframes devoteeWaterBob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(2.2px); }
+}
