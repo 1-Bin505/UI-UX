@@ -55,19 +55,67 @@
 
 <!-- ===== start ===== -->
 <header class="hero" id="top" data-title="Start" data-mode="tihar">
-<div>
-<svg viewBox="-26 -26 252 252" role="img" aria-label="Mithila sun with almond eyes">
-<circle cx="100" cy="100" r="96" fill="none" stroke="#800020" stroke-width="3"/><circle cx="100" cy="100" r="88" fill="none" stroke="#1a1210" stroke-width="2" stroke-dasharray="2 6" stroke-linecap="round"/>
-<g id="rays"></g>
-<circle cx="100" cy="100" r="52" fill="#E1AD01" stroke="#1a1210" stroke-width="4"/><circle cx="100" cy="100" r="52" fill="url(#lines)"/>
-<use href="#eye" x="68" y="86" width="64" height="32"/>
-</svg>
-<h1>Tihar &amp; Chhath</h1>
-<p>Light, kinship and the sun, painted the Mithila way. Scroll to move from one festival day to the next.</p>
-<p class="cue" aria-hidden="true">scroll down &#8595;</p>
-</div>
-</header>
+  <div class="hero-inner">
+    <div class="hero-left">
+      <h1>Tihar &amp; Chhath</h1>
+      <div class="hero-desc">
+        <p><strong>Tihar:</strong> A five-day festival of light, lamps, kinship and reverence—honouring crows, dogs, cows, Laxmi, the self and siblings.</p>
+        <p><strong>Chhath:</strong> A sun-and-river observance dedicated to Surya and Chhathi Maiya, marked by devotion, fasts and offerings at dusk and dawn.</p>
+      </div>
+      <p class="cue" aria-hidden="true">scroll down &#8595;</p>
+    </div>
 
+    <div class="hero-right">
+      <svg class="rangoli-maker" viewBox="0 0 360 280" role="img" aria-label="A Mithila-style figure making a rangoli pattern">
+        <!-- Floor Rangoli Pattern -->
+        <g id="floorRangoli" transform="translate(225, 212)">
+          <ellipse cx="0" cy="0" rx="84" ry="34" fill="none" stroke="#800020" stroke-width="3" stroke-dasharray="5 5"/>
+          <ellipse cx="0" cy="0" rx="64" ry="25" fill="#FFF4DC" fill-opacity=".65" stroke="#1a1210" stroke-width="2.4"/>
+          <ellipse cx="0" cy="0" rx="42" ry="16" fill="none" stroke="#e8590c" stroke-width="2.4"/>
+          <use href="#flower" x="-22" y="-18" width="44" height="36" style="--f1:#E1AD01;--f2:#c8102e"/>
+          <circle cx="-58" cy="0" r="6" fill="#E1AD01" stroke="#1a1210" stroke-width="2"/>
+          <circle cx="58" cy="0" r="6" fill="#E1AD01" stroke="#1a1210" stroke-width="2"/>
+          <circle cx="0" cy="-22" r="6" fill="#c8102e" stroke="#1a1210" stroke-width="2"/>
+          <circle cx="0" cy="22" r="6" fill="#c8102e" stroke="#1a1210" stroke-width="2"/>
+        </g>
+
+        <!-- Rangoli Powder Bowl -->
+        <g transform="translate(132, 206)">
+          <path d="M-22,0 Q0,24 22,0 Z" fill="#800020" stroke="#1a1210" stroke-width="3"/>
+          <ellipse cx="0" cy="0" rx="22" ry="6" fill="#E1AD01" stroke="#1a1210" stroke-width="2.4"/>
+          <ellipse cx="0" cy="-1" rx="15" ry="3.5" fill="#e8590c"/>
+        </g>
+
+        <!-- Person Kneeling & Making Rangoli (Mithila Style) -->
+        <g class="rangoli-person" stroke="#1a1210" stroke-width="3.2">
+          <!-- Lower Garment / Kneeling Legs -->
+          <path d="M62,216 Q88,162 126,178 Q138,192 122,216 Z" fill="#2B2A6B"/>
+          <path d="M62,216 Q88,162 126,178 Q138,192 122,216 Z" fill="url(#lines)" stroke="none"/>
+          <path d="M76,204 L122,204" stroke="#E1AD01" stroke-width="3" stroke-dasharray="6 4"/>
+
+          <!-- Torso -->
+          <path d="M72,174 Q74,118 98,110 Q122,118 124,174 Z" fill="#c8102e"/>
+          <path d="M80,124 Q98,142 118,122" fill="none" stroke="#E1AD01" stroke-width="3.8"/>
+
+          <!-- Head & Hair -->
+          <circle cx="100" cy="88" r="19" fill="#E1AD01"/>
+          <path d="M81,90 Q78,58 102,58 Q122,58 119,90 Q108,74 98,74 Q88,74 81,90 Z" fill="#1a1210"/>
+          <use href="#eye" x="98" y="81" width="20" height="10"/>
+
+          <!-- Drawing Arm & Hand -->
+          <g class="rangoli-arm">
+            <path d="M108,124 Q138,138 158,176" fill="none" stroke="#1a1210" stroke-width="11" stroke-linecap="round"/>
+            <path d="M108,124 Q138,138 158,176" fill="none" stroke="#E1AD01" stroke-width="5.5" stroke-linecap="round"/>
+            <circle cx="160" cy="180" r="6" fill="#E1AD01" stroke="#1a1210" stroke-width="2.5"/>
+            <!-- Falling Powder Dots -->
+            <circle class="powder-dot" cx="166" cy="190" r="2.5" fill="#e8590c" stroke="none"/>
+            <circle class="powder-dot d2" cx="172" cy="196" r="2.5" fill="#E1AD01" stroke="none"/>
+          </g>
+        </g>
+      </svg>
+    </div>
+  </div>
+</header>
 <main>
 
 <!-- 1 · Kaag Tihar -->
