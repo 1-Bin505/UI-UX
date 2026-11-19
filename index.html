@@ -16,7 +16,18 @@
 <!-- audio controls -->
 <div id="audioBox">
   <div class="row">
-    <button id="sound" aria-pressed="false" type="button">Sound off<small id="mood">tap to play</small></button>
+    <button id="audioBtn" type="button" aria-expanded="false" aria-controls="audioPanel">Add audio</button>
+    <button id="sound" aria-pressed="false" type="button">Sound off<small id="mood">add or play audio</small></button>
+  </div>
+  <div id="audioPanel" hidden>
+    <p>Choose a music file for each theme. It plays automatically when you reach those pages. Files stay on your device.</p>
+    <label class="slot"><b>Tihar dhun</b><em>Kaag, Kukur, Gai, Laxmi, Mha Puja, Bhai Tika</em>
+      <input type="file" accept="audio/*" data-slot="tihar"><output data-name="tihar">No file chosen</output></label>
+    <label class="slot"><b>Deusi-Bhailo song</b><em>Deusi-Bhailo page</em>
+      <input type="file" accept="audio/*" data-slot="deusi"><output data-name="deusi">No file chosen</output></label>
+    <label class="slot"><b>Chhath tune</b><em>Both Chhath pages</em>
+      <input type="file" accept="audio/*" data-slot="chhath"><output data-name="chhath">No file chosen</output></label>
+    <p class="note">Tip: you can also put <code>tihar.mp3</code>, <code>deusi.mp3</code> and <code>chhath.mp3</code> in an <code>audio</code> folder beside index.html and they will load by themselves.</p>
   </div>
 </div>
 
