@@ -134,129 +134,122 @@
   window.addEventListener('resize', updateBar);
   updateBar();
 
-  /* ---------- audio (permanent, background, no UI) ---------- */
-  /*
-   * Three tracks, all looping:
-   *   tihar  → audio/tihar.mp3   (Tihar sections)
-   *   deusi  → audio/deusi.mp3   (Deusi-Bhailo section, short loop)
-   *   chhath → audio/chhath.mp3  (Both Chhath sections)
-   *
-   * Deusi base volume = VOL_BASE; each dakshina adds VOL_STEP up to VOL_MAX (2×).
-   * All switching is a smooth fade. No visible UI whatsoever.
-   */
-  var VOL_BASE  = 0.55;   /* normal playback volume                    */
-  var VOL_MAX   = 1.0;    /* hard ceiling (≤ 1.0 for Web Audio)         */
-  var VOL_STEP  = 0.09;   /* volume added per dakshina gift             */
-  var FADE_TICK = 60;     /* ms between fade steps                      */
-  var FADE_INC  = 0.04;   /* volume change per tick                     */
-
-  var deusiVol  = VOL_BASE; /* current target volume for the deusi track */
-
+  /* ---------- audio ---------- */
   var TRACKS = {
-    tihar:  { src: 'audio/tihar.mp3'  },
-    deusi:  { src: 'audio/deusi.mp3'  },
-    chhath: { src: 'audio/chhath.mp3' }
+    tihar: { label: 'Tihar dhun' },
+    deusi: { label: 'Deusi-Bhailo song' },
+    chhath: { label: 'Chhath tune' }
   };
+  var VOL = .7;
+  var soundOn = false;
+  var soundBtn = $('#sound'), moodEl = $('#mood');
+  var audioBtn = $('#audioBtn'), audioPanel = $('#audioPanel');
 
-  /* Build Audio elements */
-  Object.keys(TRACKS).forEach(function (k) {
-    var t = TRACKS[k];
-    var a = new Audio();
-    a.loop    = true;
-    a.preload = 'auto';
-    a.volume  = 0;
-    t.el      = a;
-    t.ready   = false;
-    t.fade    = null;
-    a.addEventListener('canplaythrough', function () { t.ready = true; syncAudio(); }, { once: true });
-    a.src = t.src;
-  });
-
-  function targetVol(k) {
-    /* Returns the desired volume for track k when it is the active track. */
-    return k === 'deusi' ? deusiVol : VOL_BASE;
+  function setName(k, txt) {
+    var o = $('output[data-name="' + k + '"]');
+    if (o) o.textContent = txt;
   }
-
+  function anyReady() {
+    return Object.keys(TRACKS).some(function (k) { return TRACKS[k].ready; });
+  }
+  function ui() {
+    soundBtn.setAttribute('aria-pressed', String(soundOn));
+    soundBtn.firstChild.nodeValue = soundOn ? 'Sound on' : 'Sound off';
+    var t = TRACKS[mode], txt;
+    if (!anyReady()) txt = 'add or play audio';
+    else if (!t || !t.ready) txt = 'no music for this page';
+    else txt = soundOn ? t.label : 'tap to play';
+    moodEl.textContent = txt;
+  }
   function fadeTo(t, target) {
     clearInterval(t.fade);
     t.fade = setInterval(function () {
-      var cur = t.el.volume;
-      var nxt = cur < target
-        ? Math.min(target, cur + FADE_INC)
-        : Math.max(target, cur - FADE_INC);
-      t.el.volume = nxt;
-      if (Math.abs(nxt - target) < 0.001) {
-        t.el.volume = target;
+      var v = t.el.volume;
+      var nv = v < target ? Math.min(target, v + .05) : Math.max(target, v - .05);
+      t.el.volume = nv;
+      if (nv === target) {
         clearInterval(t.fade);
         if (target === 0) t.el.pause();
       }
-    }, FADE_TICK);
+    }, 60);
   }
-
   function syncAudio() {
-    if (document.hidden) return;           /* respect page-visibility API */
+    var active = soundOn && !document.hidden ? mode : null;
     Object.keys(TRACKS).forEach(function (k) {
       var t = TRACKS[k];
-      if (!t.ready) return;
-      var isActive = (k === mode ||
-                      /* tihar covers deusi mode too if deusi track absent */
-                      (mode === 'deusi' && k === 'deusi') ||
-                      (mode === 'chhath' && k === 'chhath'));
-      /* Recompute: active means the key matches current mode */
-      isActive = (k === mode);
-
-      if (isActive) {
+      if (k === active && t.ready) {
         if (t.el.paused) {
           var p = t.el.play();
-          if (p && p.catch) p.catch(function () { /* autoplay blocked; wait for gesture */ });
+          if (p && p.catch) p.catch(function () { soundOn = false; ui(); });
         }
-        fadeTo(t, targetVol(k));
-      } else {
-        if (!t.el.paused) fadeTo(t, 0);
+        fadeTo(t, VOL);
+      } else if (!t.el.paused) {
+        fadeTo(t, 0);
       }
     });
   }
-
-  /* Restart deusi track from the top (called on dakshina) */
   function restartSong(k) {
     var t = TRACKS[k];
     if (!t || !t.ready) return;
     try { t.el.currentTime = 0; } catch (e) { /* ignore */ }
-    if (mode === k) syncAudio();
+    if (soundOn && mode === k) syncAudio();
   }
 
-  /* Boost deusi volume on dakshina (capped at VOL_MAX, up to 2× base) */
-  function boostDeusi() {
-    deusiVol = Math.min(VOL_MAX, deusiVol + VOL_STEP);
-    if (mode === 'deusi') fadeTo(TRACKS.deusi, deusiVol);
-  }
-
-  /* Autoplay gate: browsers block audio until a user gesture has occurred.
-     We start playback on the very first interaction anywhere on the page. */
-  var gestureUnlocked = false;
-  function unlockAudio() {
-    if (gestureUnlocked) return;
-    gestureUnlocked = true;
-    syncAudio();
-    document.removeEventListener('click',      unlockAudio, true);
-    document.removeEventListener('touchstart', unlockAudio, true);
-    document.removeEventListener('keydown',    unlockAudio, true);
-    document.removeEventListener('scroll',     unlockAudio, true);
-  }
-  document.addEventListener('click',      unlockAudio, { capture: true, passive: true });
-  document.addEventListener('touchstart', unlockAudio, { capture: true, passive: true });
-  document.addEventListener('keydown',    unlockAudio, { capture: true, passive: true });
-  document.addEventListener('scroll',     unlockAudio, { capture: true, passive: true });
-
-  document.addEventListener('visibilitychange', function () {
-    if (!document.hidden && gestureUnlocked) syncAudio();
-    if ( document.hidden) {
-      Object.keys(TRACKS).forEach(function (k) {
-        var t = TRACKS[k];
-        if (t.ready && !t.el.paused) fadeTo(t, 0);
-      });
-    }
+  Object.keys(TRACKS).forEach(function (k) {
+    var t = TRACKS[k];
+    var a = new Audio();
+    a.loop = true;
+    a.preload = 'auto';
+    a.volume = 0;
+    t.el = a; t.ready = false; t.blob = null;
+    a.addEventListener('canplay', function () {
+      if (t.ready) return;
+      t.ready = true;
+      if (!t.blob) setName(k, 'audio/' + k + '.mp3 loaded');
+      syncAudio(); ui();
+    });
+    a.addEventListener('error', function () {
+      t.ready = false;
+      if (t.blob) setName(k, 'This file cannot be played');
+      ui();
+    });
+    a.src = 'audio/' + k + '.mp3';
   });
+
+  $$('#audioPanel input[type=file]').forEach(function (inp) {
+    inp.addEventListener('change', function () {
+      var k = inp.dataset.slot, t = TRACKS[k], f = inp.files && inp.files[0];
+      if (!t || !f) return;
+      if (t.blob) URL.revokeObjectURL(t.blob);
+      t.blob = URL.createObjectURL(f);
+      t.ready = false;
+      t.el.src = t.blob;
+      t.el.load();
+      setName(k, f.name);
+      soundOn = true;
+      ui();
+    });
+  });
+
+  soundBtn.addEventListener('click', function () {
+    if (!anyReady()) { setPanel(true); return; }
+    soundOn = !soundOn;
+    syncAudio(); ui();
+  });
+  function setPanel(open) {
+    audioPanel.hidden = !open;
+    audioBtn.setAttribute('aria-expanded', String(open));
+    audioBtn.textContent = open ? 'Hide audio' : 'Add audio';
+  }
+  audioBtn.addEventListener('click', function () { setPanel(audioPanel.hidden); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !audioPanel.hidden) { setPanel(false); audioBtn.focus(); }
+  });
+  document.addEventListener('click', function (e) {
+    if (!audioPanel.hidden && !$('#audioBox').contains(e.target)) setPanel(false);
+  });
+  document.addEventListener('visibilitychange', syncAudio);
+  ui();
 
   /* ---------- theme per page ---------- */
   var THEMES = {
@@ -301,6 +294,7 @@
     applyTheme(sec);
     var m = sec.dataset.mode || 'tihar';
     if (m !== mode) { mode = m; syncAudio(); }
+    ui();
   }
   if ('IntersectionObserver' in window) {
     var ao = new IntersectionObserver(function (es) {
@@ -548,7 +542,6 @@
       restartClass(text, 'show');
       restartClass($('svg', stage), 'shake');
       burst(stage, 8);
-      boostDeusi();
       restartSong('deusi');
     });
   })();
