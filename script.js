@@ -301,7 +301,6 @@
     applyTheme(sec);
     var m = sec.dataset.mode || 'tihar';
     if (m !== mode) { mode = m; syncAudio(); }
-    ui();
   }
   if ('IntersectionObserver' in window) {
     var ao = new IntersectionObserver(function (es) {
