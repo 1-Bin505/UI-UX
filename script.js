@@ -216,37 +216,9 @@
     a.src = 'audio/' + k + '.mp3';
   });
 
-  $$('#audioPanel input[type=file]').forEach(function (inp) {
-    inp.addEventListener('change', function () {
-      var k = inp.dataset.slot, t = TRACKS[k], f = inp.files && inp.files[0];
-      if (!t || !f) return;
-      if (t.blob) URL.revokeObjectURL(t.blob);
-      t.blob = URL.createObjectURL(f);
-      t.ready = false;
-      t.el.src = t.blob;
-      t.el.load();
-      setName(k, f.name);
-      soundOn = true;
-      ui();
-    });
-  });
-
-  soundBtn.addEventListener('click', function () {
-    if (!anyReady()) { setPanel(true); return; }
+   soundBtn.addEventListener('click', function () {
     soundOn = !soundOn;
     syncAudio(); ui();
-  });
-  function setPanel(open) {
-    audioPanel.hidden = !open;
-    audioBtn.setAttribute('aria-expanded', String(open));
-    audioBtn.textContent = open ? 'Hide audio' : 'Add audio';
-  }
-  audioBtn.addEventListener('click', function () { setPanel(audioPanel.hidden); });
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && !audioPanel.hidden) { setPanel(false); audioBtn.focus(); }
-  });
-  document.addEventListener('click', function (e) {
-    if (!audioPanel.hidden && !$('#audioBox').contains(e.target)) setPanel(false);
   });
   document.addEventListener('visibilitychange', syncAudio);
   ui();
